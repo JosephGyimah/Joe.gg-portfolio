@@ -12,6 +12,15 @@ type Chip = {
 };
 
 const CHIPS: Chip[] = [
+  { label: "React", slug: "react", bg: "#1FB6CB", fg: "#ffffff" },
+  { label: "TypeScript", slug: "typescript", bg: "#2F74C0", fg: "#ffffff" },
+  { label: "Next.js", slug: "nextdotjs", bg: "#1f1f1f", fg: "#ffffff" },
+  { label: "Tailwind CSS", slug: "tailwindcss", bg: "#2BBCF5", fg: "#ffffff" },
+  { label: "Node.js", slug: "nodedotjs", bg: "#3C873A", fg: "#ffffff" },
+  { label: "Python", slug: "python", bg: "#3572A5", fg: "#ffffff" },
+  { label: "MongoDB", slug: "mongodb", bg: "#47A248", fg: "#ffffff" },
+  { label: "Firebase", slug: "firebase", bg: "#FFCA28", fg: "#1a1a1a" },
+  { label: "Supabase", slug: "supabase", bg: "#3ECF8E", fg: "#1a1a1a" },
   {
     label: "Figma",
     slug: "figma",
@@ -19,15 +28,8 @@ const CHIPS: Chip[] = [
     fg: "#ffffff",
     iconUrl: "https://svgl.app/library/figma.svg",
   },
-  { label: "React", slug: "react", bg: "#1FB6CB", fg: "#ffffff" },
-  { label: "Next.js", slug: "nextdotjs", bg: "#1f1f1f", fg: "#ffffff" },
-  { label: "TypeScript", slug: "typescript", bg: "#2F74C0", fg: "#ffffff" },
-  { label: "shadcn/ui", slug: "shadcnui", bg: "#5b54ff", fg: "#ffffff" },
-  { label: "Cursor", slug: "cursor", bg: "#111111", fg: "#ffffff" },
-  { label: "GSAP", slug: "gsap", bg: "#0AE448", fg: "#0a0a0a" },
   { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
-  { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
-  { label: "Tailwind CSS", slug: "tailwindcss", bg: "#2BBCF5", fg: "#ffffff" },
+  { label: "Express", slug: "express", bg: "#333333", fg: "#ffffff" },
 ];
 
 const CHIP_RADIUS = 14;

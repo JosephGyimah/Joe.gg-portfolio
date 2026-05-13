@@ -26,17 +26,17 @@ export default function AboutPage(): ReactNode {
         <FadeIn delay={0.5}>
           <div className="rounded-4xl border border-foreground/5 bg-foreground/1.5 p-8 sm:p-12 dark:bg-foreground/3">
             <h1 className="font-serif text-[1.75rem] font-medium tracking-tight text-foreground sm:text-[2rem]">
-              Hello! I&rsquo;m <span className="border-b border-foreground/30 pb-0.5">Josh Mercer</span>.
+              Hello! I&rsquo;m <span className="border-b border-foreground/30 pb-0.5">Joseph Gyimah</span>.
             </h1>
             <div className="mt-8 space-y-6 text-[17px] leading-[1.7] tracking-tight text-foreground/75 sm:text-[18px]">
               <p>
-                A <strong className="font-semibold text-foreground">product designer and frontend engineer</strong> passionate about building intuitive, human-centered digital experiences. With a background in <strong className="font-semibold text-foreground">visual craft</strong> and <strong className="font-semibold text-foreground">interaction design</strong>, I bring a unique blend of design thinking and technical execution to every project.
+                A <strong className="font-semibold text-foreground">Software Engineer and Agentic Engineer</strong> passionate about building useful systems and tackling real-world problems with technology. Currently studying <strong className="font-semibold text-foreground">Information Technology at the University of Ghana</strong> and working as an Assistant I.T. Manager at Datamaker.
               </p>
               <p>
-                My journey into design began when I realized how often good user experience was missing from powerful tools. That led me to embrace <strong className="font-semibold text-foreground">user-centered design</strong> as both a mindset and a craft, one that balances clarity, creativity, and functionality.
+                My focus is on <strong className="font-semibold text-foreground">AI automation and agentic engineering</strong> — building systems that are not just functional, but intelligent. I enjoy working across the full stack, from clean React interfaces to backend APIs and database design.
               </p>
               <p>
-                Currently leading design at small product teams shipping software for <strong className="font-semibold text-foreground">creative professionals</strong>, I&rsquo;m always looking for opportunities to <strong className="font-semibold text-foreground">shape thoughtful interfaces and build scalable design systems</strong>.
+                I&rsquo;m driven by a clear goal: <strong className="font-semibold text-foreground">build impactful software and grow into a world-class developer</strong>. Always learning, always building.
               </p>
             </div>
           </div>
