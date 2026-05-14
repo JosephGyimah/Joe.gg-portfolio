@@ -126,12 +126,6 @@ function ProjectCard({
       delay={Math.min(index * 0.06, 0.3)}
       className="mb-6 break-inside-avoid md:mb-7"
     >
-      <Link
-        href={project.liveUrl ?? "#"}
-        target={project.liveUrl ? "_blank" : undefined}
-        rel={project.liveUrl ? "noopener noreferrer" : undefined}
-        aria-label={`Open ${project.iconLabel}`}
-      >
       <article className="project-card flex cursor-pointer flex-col gap-4 rounded-3xl border border-foreground/8 bg-background p-3 sm:p-3.5">
         <header className="flex items-center justify-between gap-2.5 px-1 pt-2">
           <div className="flex items-center gap-2.5">
@@ -157,8 +151,12 @@ function ProjectCard({
           ) : null}
         </header>
 
-        <div
-          className="project-card__image ring-foreground/5 relative w-full overflow-hidden rounded-2xl bg-foreground/5 ring-1"
+        <Link
+          href={project.liveUrl ?? "#"}
+          target={project.liveUrl ? "_blank" : undefined}
+          rel={project.liveUrl ? "noopener noreferrer" : undefined}
+          aria-label={`Open ${project.iconLabel}`}
+          className="project-card__image ring-foreground/5 relative block w-full overflow-hidden rounded-2xl bg-foreground/5 ring-1"
           style={{ aspectRatio: project.imageRatio }}
         >
           <div className="project-card__image-inner">
@@ -171,7 +169,7 @@ function ProjectCard({
               priority={index < 2}
             />
           </div>
-        </div>
+        </Link>
 
         <div className="flex flex-col gap-2.5 px-1 pb-1">
           <h3 className="text-[20px] font-medium leading-[1.2] tracking-tight text-foreground sm:text-[22px]">
@@ -186,7 +184,6 @@ function ProjectCard({
           {project.meta}
         </p>
       </article>
-      </Link>
     </FadeIn>
   );
 }
