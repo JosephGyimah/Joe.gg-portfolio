@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
 
 const SKILLS = [
-  "Frontend Development",
-  "TypeScript & React",
-  "Node.js & Express",
+  "Full-Stack Development",
+  "IT Management",
+  "Data Annotation & Labeling",
+  "JavaScript & TypeScript",
   "Python",
-  "MongoDB & Supabase",
-  "Firebase",
+  "Node.js & Express",
+  "React & Next.js",
+  "MongoDB, Supabase, Firesbase",
+  "Git & Version Control",
   "AI & Automation",
-  "Agentic Engineering",
+  "VibeCode (No-code AI agent builder)",
   "UI/UX with Figma",
 ];
 
@@ -16,7 +19,7 @@ export function Skills(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-[15px] font-semibold tracking-tight text-foreground">
-        What I do
+        Skills
       </h3>
       <div className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
         <div className="flex flex-wrap gap-3">

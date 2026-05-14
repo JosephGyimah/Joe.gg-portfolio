@@ -20,7 +20,7 @@ export default function ProjectsPage(): ReactNode {
             My recent work
           </h1>
           <p className="max-w-[33ch] text-[20px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px]">
-            Systems I&rsquo;ve built — from AI-powered platforms to full-stack web applications.
+            Systems I&rsquo;ve built, from AI-powered platforms to full-stack web applications.
           </p>
         </FadeIn>
       </section>

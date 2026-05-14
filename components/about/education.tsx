@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 type Entry = {
@@ -5,14 +6,15 @@ type Entry = {
   degree: string;
   period: string;
   slug?: string;
+  logoSrc?: string;
 };
 
 const ENTRIES: Entry[] = [
   {
     school: "University of Ghana",
     degree: "BSc Information Technology",
-    period: "2022 – Present",
-    slug: "universityofghana",
+    period: "2023 – Present",
+    logoSrc: "/university.png",
   },
 ];
 
@@ -59,8 +61,17 @@ function SchoolLogo({ entry }: { entry: Entry }): ReactNode {
       aria-hidden="true"
       style={{ borderRadius: 14 }}
     >
-      {entry.slug ? (
-        <img
+      {entry.logoSrc ? (
+        <Image
+          src={entry.logoSrc}
+          alt=""
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+          draggable={false}
+        />
+      ) : entry.slug ? (
+        <Image
           src={`https://cdn.simpleicons.org/${entry.slug}`}
           alt=""
           width={24}

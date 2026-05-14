@@ -306,8 +306,8 @@ export function PortraitMorph({
       ref={containerRef}
       role="img"
       aria-label={alt}
-      className={className}
-      style={{ position: "relative", width: "100%", height: "100%", filter: "grayscale(100%)" }}
+      style={{ position: "relative", width: "100%", height: "100%" }}
+      className={`${className ?? ""} grayscale hover:grayscale-0 transition-[filter] duration-500`.trim()}
     >
       {!ready ? (
         <img

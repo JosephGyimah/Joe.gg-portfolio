@@ -5,7 +5,7 @@ import { Check, Copy, Mail } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-const EMAIL = "datamakergh@gmail.com";
+const EMAIL = "josephgyimah.official@gmail.com";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function ContactButton(): ReactNode {

@@ -1,6 +1,6 @@
 import { Education } from "@/components/about/education";
 import { Experience } from "@/components/about/experience";
-import { PolaroidStrip } from "@/components/about/polaroid-strip";
+// import { PolaroidStrip } from "@/components/about/polaroid-strip";
 import { Skills } from "@/components/about/skills";
 import { Stack } from "@/components/about/stack";
 import { ContactCard } from "@/components/contact/contact-card";
@@ -18,11 +18,11 @@ export const metadata: Metadata = createMetadata({
 export default function AboutPage(): ReactNode {
   return (
     <main id="main-content" className="flex flex-1 flex-col">
-      <section className="mx-auto w-full max-w-312 pt-40 sm:pt-56">
+      {/* <section className="mx-auto w-full max-w-312 pt-40 sm:pt-56">
         <PolaroidStrip />
-      </section>
+      </section> */}
 
-      <section className="mx-auto w-full max-w-160 px-6 pt-20 pb-16 sm:px-10 sm:pt-28 sm:pb-24">
+      <section className="mx-auto w-full max-w-160 px-6 pt-40 pb-16 sm:px-10 sm:pt-56 sm:pb-24">
         <FadeIn delay={0.5}>
           <div className="rounded-4xl border border-foreground/5 bg-foreground/1.5 p-8 sm:p-12 dark:bg-foreground/3">
             <h1 className="font-serif text-[1.75rem] font-medium tracking-tight text-foreground sm:text-[2rem]">
@@ -30,13 +30,13 @@ export default function AboutPage(): ReactNode {
             </h1>
             <div className="mt-8 space-y-6 text-[17px] leading-[1.7] tracking-tight text-foreground/75 sm:text-[18px]">
               <p>
-                A <strong className="font-semibold text-foreground">Software Engineer and Agentic Engineer</strong> passionate about building useful systems and tackling real-world problems with technology. Currently studying <strong className="font-semibold text-foreground">Information Technology at the University of Ghana</strong> and working as an Assistant I.T. Manager at Datamaker.
+                A <strong className="font-semibold text-foreground">Software Engineer and Agentic Engineer</strong> passionate about building useful systems and tackling real-world problems with technology.
               </p>
               <p>
-                My focus is on <strong className="font-semibold text-foreground">AI automation and agentic engineering</strong> — building systems that are not just functional, but intelligent. I enjoy working across the full stack, from clean React interfaces to backend APIs and database design.
+                My focus is on <strong className="font-semibold text-foreground">AI automation and agentic engineering</strong>, building systems that are not just functional, but intelligent. I enjoy working on projects that have a tangible impact and push the boundaries of what software can do.
               </p>
               <p>
-                I&rsquo;m driven by a clear goal: <strong className="font-semibold text-foreground">build impactful software and grow into a world-class developer</strong>. Always learning, always building.
+                I&rsquo;m driven by a clear goal: <strong className="font-semibold text-foreground">Build impactful software and grow into a world-class developer</strong>. <br/><em>Always learning, always building</em>
               </p>
             </div>
           </div>

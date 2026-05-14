@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useState, type ReactNode } from "react";
 
@@ -10,14 +11,15 @@ type Entry = {
   period: string;
   slug?: string;
   brand?: string;
+  logoSrc?: string;
 };
 
 const ENTRIES: Entry[] = [
   {
     company: "Datamaker",
     role: "Assistant I.T. Manager",
-    period: "Present",
-    brand: "#0AE448",
+    period: "2024 - Present",
+    logoSrc: "/datamaker.png",
   },
 ];
 
@@ -135,8 +137,17 @@ function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
         ...(entry.slug ? {} : { backgroundColor: entry.brand }),
       }}
     >
-      {entry.slug ? (
-        <img
+      {entry.logoSrc ? (
+        <Image
+          src={entry.logoSrc}
+          alt=""
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+          draggable={false}
+        />
+      ) : entry.slug ? (
+        <Image
           src={`https://cdn.simpleicons.org/${entry.slug}`}
           alt=""
           width={24}

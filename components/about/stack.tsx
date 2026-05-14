@@ -29,6 +29,8 @@ const CHIPS: Chip[] = [
     iconUrl: "https://svgl.app/library/figma.svg",
   },
   { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
+  { label: "Git", slug: "git", bg: "#F05032", fg: "#ffffff" },
+  { label: "JavaScript", slug: "javascript", bg: "#F7DF1E", fg: "#1a1a1a" },
   { label: "Express", slug: "express", bg: "#333333", fg: "#ffffff" },
 ];
 

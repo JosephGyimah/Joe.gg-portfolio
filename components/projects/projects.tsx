@@ -25,6 +25,8 @@ type Project = {
   imageRatio: number;
   image: string;
   imageAlt: string;
+  link?: string;
+  liveUrl?: string;
 };
 
 const PROJECTS: Project[] = [
@@ -35,12 +37,13 @@ const PROJECTS: Project[] = [
     title:
       "A web-based ticketing system designed to manage support tickets, users, and administrative workflows.",
     description:
-      "Built to streamline IT support operations — agents can create, assign, and resolve tickets while admins get a full dashboard to track team performance.",
-    meta: "Software Engineer, 2025",
-    imageRatio: 1024 / 768,
-    image:
-      "https://cdn.dribbble.com/userupload/43955214/file/original-d4cde1de803e84b97d8892e3444c04b0.png?resize=1024x768&vertical=center",
-    imageAlt: "Help Desk ticketing system mockup",
+      "Built to streamline IT support operations, the Ticketing System allows users to create, submit and track support tickets while providing admins with tools to manage and resolve issues efficiently.",
+    meta: "Work Project, 2026",
+    imageRatio: 3238 / 1626,
+    image: "/opportunity-finder-preview.png",
+    imageAlt: "Help Desk ticketing system landing page",
+    link: "https://github.com/JosephGyimah/datamaker-ticketing-system",
+    liveUrl: "https://datamaker-ticketing-payslip-system.vercel.app",
   },
   {
     id: "ai-opportunity-finder",
@@ -50,11 +53,12 @@ const PROJECTS: Project[] = [
       "An AI-powered platform that matches students with the right opportunities faster, smarter, and with full transparency.",
     description:
       "Students get personalized matches for scholarships, internships, and programs. The AI explains every recommendation so users understand why it fits them.",
-    meta: "Agentic Engineer, 2025",
-    imageRatio: 1024 / 768,
-    image:
-      "https://cdn.dribbble.com/userupload/16560717/file/original-c6f745d50302d66609bfe080f99f5396.png?resize=1024x768&vertical=center",
-    imageAlt: "AI Opportunity Finder platform mockup",
+    meta: "Personal Project, 2026",
+    imageRatio: 2840 / 1550,
+    image: "/helpdesk-preview.png",
+    imageAlt: "AI Opportunity Finder platform landing page",
+    link: "https://github.com/JosephGyimah/Opportunity-Finder",
+    liveUrl: "https://opportunity-finder-green.vercel.app",
   },
 ];
 
@@ -78,7 +82,7 @@ export function Projects({
               My projects
             </h2>
             <p className="max-w-[33ch] text-[18px] leading-[1.45] tracking-tight text-foreground/65 sm:text-[20px]">
-              Systems I&rsquo;ve built — from AI-powered platforms to
+              Systems I&rsquo;ve built, from AI-powered platforms to
               full-stack web applications.
             </p>
           </FadeIn>
@@ -122,14 +126,35 @@ function ProjectCard({
       delay={Math.min(index * 0.06, 0.3)}
       className="mb-6 break-inside-avoid md:mb-7"
     >
+      <Link
+        href={project.liveUrl ?? "#"}
+        target={project.liveUrl ? "_blank" : undefined}
+        rel={project.liveUrl ? "noopener noreferrer" : undefined}
+        aria-label={`Open ${project.iconLabel}`}
+      >
       <article className="project-card flex cursor-pointer flex-col gap-4 rounded-3xl border border-foreground/8 bg-background p-3 sm:p-3.5">
-        <header className="flex items-center gap-2.5 px-1 pt-2">
-          <span className="border-foreground/10 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-background">
-            <Icon className="h-3.5 w-3.5 text-foreground" aria-hidden="true" />
-          </span>
-          <span className="text-sm font-medium tracking-tight text-foreground">
-            {project.iconLabel}
-          </span>
+        <header className="flex items-center justify-between gap-2.5 px-1 pt-2">
+          <div className="flex items-center gap-2.5">
+            <span className="border-foreground/10 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-background">
+              <Icon className="h-3.5 w-3.5 text-foreground" aria-hidden="true" />
+            </span>
+            <span className="text-sm font-medium tracking-tight text-foreground">
+              {project.iconLabel}
+            </span>
+          </div>
+          {project.link ? (
+            <Link
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View on GitHub"
+              className="border-foreground/8 hover:border-foreground/20 focus-ring inline-flex h-8 w-8 items-center justify-center rounded-lg border bg-background text-foreground/50 transition-colors hover:text-foreground"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+              </svg>
+            </Link>
+          ) : null}
         </header>
 
         <div
@@ -161,6 +186,7 @@ function ProjectCard({
           {project.meta}
         </p>
       </article>
+      </Link>
     </FadeIn>
   );
 }
