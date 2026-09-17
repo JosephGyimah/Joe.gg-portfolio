@@ -9,6 +9,10 @@ export type PortraitMorphProps = {
   srcB: string;
   alt: string;
   className?: string;
+  focalPoint?: {
+    x: number;
+    y: number;
+  };
 };
 
 const VERTEX_SHADER = `
@@ -29,6 +33,7 @@ uniform float uProgress;
 uniform float uTime;
 uniform vec2 uResolution;
 uniform vec2 uImageSize;
+uniform vec2 uFocalPoint;
 uniform vec2 uOrigin;
 uniform vec2 uDirection;
 
@@ -39,9 +44,14 @@ vec2 coverUv(vec2 uv) {
     min((uResolution.x / uResolution.y) / (uImageSize.x / uImageSize.y), 1.0),
     min((uResolution.y / uResolution.x) / (uImageSize.y / uImageSize.x), 1.0)
   );
+  vec2 offset = clamp(
+    uFocalPoint - ratio * 0.5,
+    vec2(0.0),
+    vec2(1.0) - ratio
+  );
   return vec2(
-    uv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-    uv.y * ratio.y + (1.0 - ratio.y) * 0.5
+    uv.x * ratio.x + offset.x,
+    uv.y * ratio.y + offset.y
   );
 }
 
@@ -119,6 +129,7 @@ export function PortraitMorph({
   srcB,
   alt,
   className,
+  focalPoint,
 }: PortraitMorphProps): ReactNode {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
@@ -127,6 +138,8 @@ export function PortraitMorph({
   const originRef = useRef<[number, number]>([0.5, 0.5]);
   const directionRef = useRef<[number, number]>([1, 0]);
   const lastPointerRef = useRef<{ x: number; y: number; t: number } | null>(null);
+  const focalPointX = Math.max(0, Math.min(1, focalPoint?.x ?? 0.5));
+  const focalPointY = Math.max(0, Math.min(1, focalPoint?.y ?? 0.5));
 
   useEffect(() => {
     const container = containerRef.current;
@@ -176,6 +189,7 @@ export function PortraitMorph({
         uTime: { value: 0 },
         uResolution: { value: [1, 1] as [number, number] },
         uImageSize: { value: imageSize },
+        uFocalPoint: { value: [focalPointX, focalPointY] as [number, number] },
         uOrigin: { value: [0.5, 0.5] as [number, number] },
         uDirection: { value: [1, 0] as [number, number] },
       },
@@ -299,7 +313,7 @@ export function PortraitMorph({
       if (ext) ext.loseContext();
       if (canvas.parentNode === container) container.removeChild(canvas);
     };
-  }, [srcA, srcB]);
+  }, [focalPointX, focalPointY, srcA, srcB]);
 
   return (
     <div
@@ -315,6 +329,7 @@ export function PortraitMorph({
           alt={alt}
           draggable={false}
           className="absolute inset-0 h-full w-full select-none object-cover"
+          style={{ objectPosition: `${focalPointX * 100}% ${(1 - focalPointY) * 100}%` }}
         />
       ) : null}
     </div>

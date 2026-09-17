@@ -6,6 +6,7 @@ import { PortraitMorph } from "./portrait-morph";
 
 const PORTRAIT_SRC = "/profile.webp";
 const PORTRAIT_HOVER_SRC = "/profile.webp";
+const PORTRAIT_FOCAL_POINT = { x: 0.5, y: 0.62 };
 
 export function Hero(): ReactNode {
   return (
@@ -43,6 +44,7 @@ export function Hero(): ReactNode {
                   srcA={PORTRAIT_SRC}
                   srcB={PORTRAIT_HOVER_SRC}
                   alt="Joseph Gyimah portrait"
+                  focalPoint={PORTRAIT_FOCAL_POINT}
                 />
               </div>
             </div>
