@@ -9,7 +9,7 @@ const SKILLS = [
   "Python",
   "Node.js & Express",
   "React & Next.js",
-  "MongoDB, Supabase, Firesbase",
+  "MongoDB, Supabase, Firebase",
   "Git & Version Control",
   "AI & Automation",
   "AI-Assisted Development",
