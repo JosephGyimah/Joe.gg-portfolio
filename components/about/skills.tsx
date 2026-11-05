@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 const SKILLS = [
+  "Software Engineering",
   "Full-Stack Development",
   "IT Management",
   "Data Annotation & Labeling",
@@ -11,7 +12,7 @@ const SKILLS = [
   "MongoDB, Supabase, Firesbase",
   "Git & Version Control",
   "AI & Automation",
-  "VibeCode (No-code AI agent builder)",
+  "AI-Assisted Development",
   "UI/UX with Figma",
 ];
 
