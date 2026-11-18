@@ -68,7 +68,7 @@ export function Experience(): ReactNode {
           <div className="flex items-start gap-3">
             <CompanyLogo entry={active} />
             <div className="min-w-0">
-              <h4 className="text-foreground whitespace-nowrap text-[18px] font-semibold leading-tight tracking-tight sm:text-[24px]">
+              <h4 className="text-foreground whitespace-nowrap text-[15px] font-semibold leading-tight tracking-tight sm:text-[24px]">
                 {active.role} <span className="text-cyan-400">@ {active.company}</span>
               </h4>
               <p className="text-foreground/45 mt-2 font-mono text-[12px] uppercase tracking-[0.08em] sm:text-[13px]">
@@ -100,7 +100,7 @@ function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
   const initials = entry.company.charAt(0);
   return (
     <span
-      className="ring-foreground/8 inline-flex h-12 w-12 shrink-0 items-center justify-center bg-white ring-1 dark:ring-white/10"
+      className="ring-foreground/8 hidden h-12 w-12 shrink-0 items-center justify-center bg-white ring-1 sm:inline-flex dark:ring-white/10"
       aria-hidden="true"
       style={{
         borderRadius: 14,

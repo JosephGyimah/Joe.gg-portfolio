@@ -104,17 +104,25 @@ function ProjectCarousel({
   projects: Project[];
 }): ReactNode {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const active = projects[activeIndex] ?? projects[0];
   if (!active) return null;
 
   const showPrevious = (): void => {
+    setDirection(-1);
     setActiveIndex((index) =>
       index === 0 ? projects.length - 1 : index - 1
     );
   };
 
   const showNext = (): void => {
+    setDirection(1);
     setActiveIndex((index) => (index + 1) % projects.length);
+  };
+
+  const showProject = (index: number): void => {
+    setDirection(index >= activeIndex ? 1 : -1);
+    setActiveIndex(index);
   };
 
   return (
@@ -160,13 +168,28 @@ function ProjectCarousel({
           </span>
         </button>
 
-        <div className="relative aspect-[16/10] min-h-105 overflow-hidden rounded-[1.25rem] border border-foreground/8 bg-neutral-950 sm:aspect-[16/8.5] sm:min-h-0 sm:rounded-[1.5rem]">
-          <AnimatePresence mode="wait">
+        <div className="relative h-[26rem] overflow-hidden rounded-[1.25rem] border border-foreground/8 bg-neutral-950 sm:h-auto sm:aspect-[16/8.5] sm:rounded-[1.5rem]">
+          <AnimatePresence mode="sync">
             <motion.div
               key={active.id}
-              initial={{ opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
+              custom={direction}
+              variants={{
+                enter: (slideDirection: number) => ({
+                  x: slideDirection > 0 ? "100%" : "-100%",
+                  opacity: 0,
+                }),
+                center: {
+                  x: 0,
+                  opacity: 1,
+                },
+                exit: (slideDirection: number) => ({
+                  x: slideDirection > 0 ? "-100%" : "100%",
+                  opacity: 0,
+                }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0"
             >
@@ -180,17 +203,17 @@ function ProjectCarousel({
               />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(2,6,23,0.95)_0%,rgba(2,6,23,0.62)_42%,rgba(2,6,23,0.08)_75%)]" />
 
-              <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-10 pb-12 text-center sm:pb-14">
-                <h3 className="font-serif text-[30px] font-medium leading-tight tracking-tight text-white sm:text-[42px]">
+              <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-5 pb-5 text-center sm:px-10 sm:pb-14">
+                <h3 className="font-serif text-[26px] font-medium leading-tight tracking-tight text-white sm:text-[42px]">
                   {active.iconLabel}
                 </h3>
-                <p className="mt-3 max-w-[55ch] text-[13px] leading-[1.55] text-white/75 sm:text-[16px]">
+                <p className="mt-2 max-w-[55ch] text-[12px] leading-[1.45] text-white/75 sm:mt-3 sm:text-[16px] sm:leading-[1.55]">
                   {active.description}
                 </p>
-                <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-cyan-300 sm:text-[12px]">
+                <p className="mt-2 text-[10px] uppercase tracking-[0.12em] text-cyan-300 sm:mt-3 sm:text-[12px]">
                   {active.meta}
                 </p>
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-3 flex items-center gap-3 sm:mt-4">
                   {active.link ? (
                     <Link
                       href={active.link}
@@ -224,7 +247,7 @@ function ProjectCarousel({
             <button
               key={project.id}
               type="button"
-              onClick={() => setActiveIndex(index)}
+              onClick={() => showProject(index)}
               aria-label={`Show ${project.iconLabel}`}
               aria-current={index === activeIndex}
               className={`h-1.5 rounded-full transition-all ${
