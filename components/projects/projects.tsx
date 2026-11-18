@@ -1,11 +1,17 @@
+ "use client";
+
 import {
   ArrowRight,
   Bot,
+  ExternalLink,
+  Github,
   LifeBuoy,
 } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 
 import { FadeIn } from "@/components/ui/motion-primitives";
 
@@ -37,7 +43,7 @@ const PROJECTS: Project[] = [
     title:
       "A web-based ticketing system designed to manage support tickets, users, and administrative workflows.",
     description:
-      "Built to streamline IT support operations, the Ticketing System allows users to create, submit and track support tickets while providing admins with tools to manage and resolve issues efficiently.",
+      "A support ticket platform for submitting, tracking, and resolving requests with streamlined user and admin workflows.",
     meta: "Work Project, 2026",
     imageRatio: 3238 / 1626,
     image: "/opportunity-finder-preview.png",
@@ -52,7 +58,7 @@ const PROJECTS: Project[] = [
     title:
       "An AI-powered platform that matches students with the right opportunities faster, smarter, and with full transparency.",
     description:
-      "Students get personalized matches for scholarships, internships, and programs. The AI explains every recommendation so users understand why it fits them.",
+      "An AI-powered opportunity matcher for scholarships, internships, and programs, with clear explanations for every recommendation.",
     meta: "Personal Project, 2026",
     imageRatio: 2840 / 1550,
     image: "/helpdesk-preview.png",
@@ -74,42 +80,163 @@ export function Projects({
   const items = viewMoreVisible ? PROJECTS.slice(0, 4) : PROJECTS;
 
   return (
-    <section className="relative w-full">
+    <section id="projects" className="relative w-full scroll-mt-24">
       <div className="mx-auto w-full max-w-275 px-6 sm:px-10">
         {withHeadline ? (
-          <FadeIn className="flex flex-col items-center gap-5 pt-12 pb-10 text-center sm:pt-20 sm:pb-14">
-            <h2 className="font-serif text-[2.5rem] font-medium leading-[1.05] tracking-tight text-foreground md:text-[3rem] lg:text-[3.5rem]">
-              My projects
-            </h2>
-            <p className="max-w-[33ch] text-[18px] leading-[1.45] tracking-tight text-foreground/65 sm:text-[20px]">
-              Systems I&rsquo;ve built, from AI-powered platforms to
-              full-stack web applications.
-            </p>
-          </FadeIn>
+          <ProjectCarousel projects={items} />
         ) : null}
 
-        <div className="columns-1 gap-6 md:columns-2 md:gap-7">
-          {items.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
-
-        {viewMoreVisible ? (
-          <div className="mt-12 flex justify-center sm:mt-16">
-            <Link
-              href="/projects"
-              className="border border-foreground/8 focus-ring group inline-flex cursor-pointer items-center gap-2 rounded-xl bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
-            >
-              View all projects
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </Link>
+        {!withHeadline ? (
+          <div className="columns-1 gap-6 md:columns-2 md:gap-7">
+            {items.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
           </div>
         ) : null}
       </div>
     </section>
+  );
+}
+
+function ProjectCarousel({
+  projects,
+}: {
+  projects: Project[];
+}): ReactNode {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = projects[activeIndex] ?? projects[0];
+  if (!active) return null;
+
+  const showPrevious = (): void => {
+    setActiveIndex((index) =>
+      index === 0 ? projects.length - 1 : index - 1
+    );
+  };
+
+  const showNext = (): void => {
+    setActiveIndex((index) => (index + 1) % projects.length);
+  };
+
+  return (
+    <div className="pb-12 sm:pb-16">
+      <FadeIn className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+        <h2 className="text-foreground font-mono text-[26px] font-medium tracking-tight sm:text-[32px]">
+          / projects
+        </h2>
+        <Link
+          href="https://github.com/JosephGyimah"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="focus-ring group inline-flex shrink-0 items-center gap-2 text-[13px] font-medium text-cyan-400 sm:text-[15px]"
+        >
+          View all projects
+          <ArrowRight
+            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </Link>
+      </FadeIn>
+
+      <div className="relative">
+        <button
+          type="button"
+          onClick={showPrevious}
+          aria-label="Previous project"
+          className="focus-ring absolute left-3 top-1/2 z-20 -translate-y-1/2 text-foreground/80 transition-colors hover:text-cyan-400 sm:left-5"
+        >
+          <span aria-hidden="true" className="text-[38px] leading-none sm:text-[48px]">
+            ‹
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={showNext}
+          aria-label="Next project"
+          className="focus-ring absolute right-3 top-1/2 z-20 -translate-y-1/2 text-foreground/80 transition-colors hover:text-cyan-400 sm:right-5"
+        >
+          <span aria-hidden="true" className="text-[38px] leading-none sm:text-[48px]">
+            ›
+          </span>
+        </button>
+
+        <div className="relative aspect-[16/10] min-h-105 overflow-hidden rounded-[1.25rem] border border-foreground/8 bg-neutral-950 sm:aspect-[16/8.5] sm:min-h-0 sm:rounded-[1.5rem]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active.id}
+              initial={{ opacity: 0, scale: 1.02 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={active.image}
+                alt={active.imageAlt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 1100px, calc(100vw - 48px)"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(2,6,23,0.95)_0%,rgba(2,6,23,0.62)_42%,rgba(2,6,23,0.08)_75%)]" />
+
+              <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-10 pb-12 text-center sm:pb-14">
+                <h3 className="font-serif text-[30px] font-medium leading-tight tracking-tight text-white sm:text-[42px]">
+                  {active.iconLabel}
+                </h3>
+                <p className="mt-3 max-w-[55ch] text-[13px] leading-[1.55] text-white/75 sm:text-[16px]">
+                  {active.description}
+                </p>
+                <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-cyan-300 sm:text-[12px]">
+                  {active.meta}
+                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  {active.link ? (
+                    <Link
+                      href={active.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View ${active.iconLabel} on GitHub`}
+                      className="focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/85 transition-colors hover:border-cyan-300/60 hover:text-cyan-300"
+                    >
+                      <Github className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  ) : null}
+                  {active.liveUrl ? (
+                    <Link
+                      href={active.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${active.iconLabel}`}
+                      className="focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/85 transition-colors hover:border-cyan-300/60 hover:text-cyan-300"
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  ) : null}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="mt-5 flex justify-center gap-2">
+          {projects.map((project, index) => (
+            <button
+              key={project.id}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Show ${project.iconLabel}`}
+              aria-current={index === activeIndex}
+              className={`h-1.5 rounded-full transition-all ${
+                index === activeIndex
+                  ? "w-7 bg-cyan-400"
+                  : "w-3 bg-foreground/20 hover:bg-foreground/40"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -12,7 +12,7 @@ const CARD_FADE_MASK =
 
 export function ContactCard(): ReactNode {
   return (
-    <section className="mx-auto my-12 w-full max-w-275 px-6 sm:my-20 sm:px-10">
+    <section id="contact" className="mx-auto my-12 w-full max-w-275 scroll-mt-24 px-6 sm:my-20 sm:px-10">
       <FadeIn>
         <div className="relative w-full overflow-hidden rounded-4xl border border-foreground/8 bg-background p-1.5 shadow-sm">
           <div className="relative w-full overflow-hidden rounded-[1.6rem]">
@@ -29,7 +29,7 @@ export function ContactCard(): ReactNode {
 
             <div className="relative grid gap-8 p-6 sm:gap-10 sm:p-7 md:grid-cols-[1.2fr_1fr] md:items-stretch md:gap-6 md:p-6">
               <div className="flex flex-col gap-5">
-                <h2 className="font-serif text-[2.25rem] font-medium leading-[1.05] tracking-tight text-foreground sm:text-[2.75rem] lg:text-[3.25rem]">
+                <h2 className="font-serif text-cyan-400 text-[2.25rem] font-medium leading-[1.05] tracking-tight sm:text-[2.75rem] lg:text-[3.25rem]">
                   Let&rsquo;s connect
                 </h2>
                 <p className="max-w-[29ch] text-[18px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px] mb-6">
@@ -63,9 +63,6 @@ export function ContactCard(): ReactNode {
                   />
                 </div>
                 <div className="flex flex-col items-center gap-1 text-center">
-                  <p className="text-[13px] tracking-tight text-foreground/70">
-                    Built with Next.js
-                  </p>
                   <p className="text-[12px] tracking-tight text-foreground/45">
                     Passion💙
                   </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NextImage from "next/image";
 import type { ReactNode } from "react";
 import { Renderer, Program, Mesh, Triangle, Transform, Texture } from "ogl";
 
@@ -9,6 +10,7 @@ export type PortraitMorphProps = {
   srcB: string;
   alt: string;
   className?: string;
+  focalPoint?: [number, number];
 };
 
 const VERTEX_SHADER = `
@@ -31,6 +33,7 @@ uniform vec2 uResolution;
 uniform vec2 uImageSize;
 uniform vec2 uOrigin;
 uniform vec2 uDirection;
+uniform vec2 uFocalPoint;
 
 varying vec2 vUv;
 
@@ -40,8 +43,8 @@ vec2 coverUv(vec2 uv) {
     min((uResolution.y / uResolution.x) / (uImageSize.y / uImageSize.x), 1.0)
   );
   return vec2(
-    uv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-    uv.y * ratio.y + (1.0 - ratio.y) * 0.5
+    uv.x * ratio.x + (1.0 - ratio.x) * uFocalPoint.x,
+    uv.y * ratio.y + (1.0 - ratio.y) * (1.0 - uFocalPoint.y)
   );
 }
 
@@ -114,11 +117,14 @@ void main() {
 }
 `;
 
+const DEFAULT_FOCAL_POINT: [number, number] = [0.5, 0.15];
+
 export function PortraitMorph({
   srcA,
   srcB,
   alt,
   className,
+  focalPoint = DEFAULT_FOCAL_POINT,
 }: PortraitMorphProps): ReactNode {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
@@ -131,11 +137,12 @@ export function PortraitMorph({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    if (srcA === srcB) return;
 
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
     });
     const gl = renderer.gl;
     const canvas = gl.canvas as HTMLCanvasElement;
@@ -178,6 +185,7 @@ export function PortraitMorph({
         uImageSize: { value: imageSize },
         uOrigin: { value: [0.5, 0.5] as [number, number] },
         uDirection: { value: [1, 0] as [number, number] },
+        uFocalPoint: { value: focalPoint },
       },
       transparent: true,
     });
@@ -203,6 +211,18 @@ export function PortraitMorph({
     let last = performance.now();
     let time = 0;
     let running = true;
+    let onScreen = true;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        onScreen = entries[0]?.isIntersecting ?? true;
+      },
+      { rootMargin: "80px" }
+    );
+    io.observe(container);
+
+    const isVisible = (): boolean =>
+      document.visibilityState === "visible" && onScreen;
 
     const tick = () => {
       if (!running) return;
@@ -216,13 +236,16 @@ export function PortraitMorph({
       const k = 1 - Math.exp(-stiffness * dt);
       progressRef.current += (target - progressRef.current) * k;
 
-      program.uniforms.uTime.value = time;
-      program.uniforms.uProgress.value = progressRef.current;
-      program.uniforms.uOrigin.value = originRef.current;
-      program.uniforms.uDirection.value = directionRef.current;
-      program.uniforms.uImageSize.value = imageSize;
+      if (isVisible()) {
+        program.uniforms.uTime.value = time;
+        program.uniforms.uProgress.value = progressRef.current;
+        program.uniforms.uOrigin.value = originRef.current;
+        program.uniforms.uDirection.value = directionRef.current;
+        program.uniforms.uImageSize.value = imageSize;
+        program.uniforms.uFocalPoint.value = focalPoint;
 
-      renderer.render({ scene });
+        renderer.render({ scene });
+      }
       raf = requestAnimationFrame(tick);
     };
 
@@ -292,6 +315,7 @@ export function PortraitMorph({
       running = false;
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
       container.removeEventListener("pointerenter", onPointerEnter);
       container.removeEventListener("pointerleave", onPointerLeave);
       container.removeEventListener("pointermove", onPointerMove);
@@ -299,7 +323,7 @@ export function PortraitMorph({
       if (ext) ext.loseContext();
       if (canvas.parentNode === container) container.removeChild(canvas);
     };
-  }, [srcA, srcB]);
+  }, [srcA, srcB, focalPoint]);
 
   return (
     <div
@@ -310,11 +334,15 @@ export function PortraitMorph({
       className={`${className ?? ""} grayscale hover:grayscale-0 transition-[filter] duration-500`.trim()}
     >
       {!ready ? (
-        <img
+        <NextImage
           src={srcA}
           alt={alt}
           draggable={false}
+          fill
+          sizes="(min-width: 768px) 420px, calc(100vw - 48px)"
+          priority
           className="absolute inset-0 h-full w-full select-none object-cover"
+          style={{ objectPosition: `${focalPoint[0] * 100}% ${focalPoint[1] * 100}%` }}
         />
       ) : null}
     </div>

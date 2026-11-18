@@ -217,8 +217,8 @@ export function Stack(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-          Stack
+        <h3 className="text-foreground font-mono text-[26px] font-medium tracking-tight sm:text-[32px]">
+          / stack
         </h3>
       </div>
 

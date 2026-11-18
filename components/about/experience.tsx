@@ -1,17 +1,14 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
 import { useState, type ReactNode } from "react";
 
 type Entry = {
   company: string;
   role: string;
   period: string;
-  slug?: string;
-  brand?: string;
   logoSrc?: string;
+  highlights: string[];
 };
 
 const ENTRIES: Entry[] = [
@@ -20,107 +17,80 @@ const ENTRIES: Entry[] = [
     role: "Assistant I.T. Manager",
     period: "2024 - Present",
     logoSrc: "/datamaker.png",
+    highlights: [
+      "Developed a project management web app which was used to replace existing Excel workflows with 100+ users.",
+      "Built automations for attendance and other internal tools.",
+      "Collaborated with senior managers and project managers to learn more about teamwork and operations.",
+      "Managed day-to-day IT support, including troubleshooting technical issues and coordinating system solutions.",
+      "Supported device setup, account access, and internal technology operations across the team.",
+    ],
   },
 ];
 
-const COLLAPSED_COUNT = 2.5;
-const ROW_HEIGHT = 64;
-const ROW_GAP = 8;
-
 export function Experience(): ReactNode {
-  const [open, setOpen] = useState(false);
-  const collapsedHeight =
-    Math.floor(COLLAPSED_COUNT) * ROW_HEIGHT +
-    Math.floor(COLLAPSED_COUNT) * ROW_GAP +
-    (COLLAPSED_COUNT % 1) * ROW_HEIGHT;
-  const hiddenCount = ENTRIES.length - Math.floor(COLLAPSED_COUNT);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = ENTRIES[activeIndex]!;
 
   return (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-        Experience
+    <div className="flex flex-col gap-5">
+      <h3 className="text-foreground font-mono text-[26px] font-medium tracking-tight sm:text-[32px]">
+        / experience
       </h3>
-      <div
-        className={`border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative overflow-hidden rounded-4xl border px-2 pt-2 sm:px-4 sm:pt-4 ${
-          open ? "pb-2 sm:pb-4" : "pb-0"
-        }`}
-      >
-        <motion.div
-          className="relative"
-          initial={false}
-          animate={{
-            height: open ? "auto" : collapsedHeight,
-          }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ overflow: "hidden" }}
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[5.5rem_1fr] sm:gap-8">
+        <div
+          role="tablist"
+          aria-label="Experience"
+          className="flex gap-2 overflow-x-auto sm:flex-col sm:overflow-visible"
         >
-          <ul className="flex flex-col gap-2">
-            {ENTRIES.map((entry) => (
+          {ENTRIES.map((entry, index) => (
+            <button
+              key={`${entry.company}-${entry.period}`}
+              type="button"
+              role="tab"
+              aria-selected={activeIndex === index}
+              onClick={() => setActiveIndex(index)}
+              className={`focus-ring flex h-11 shrink-0 items-center border-b-2 border-transparent px-3 text-left text-[14px] transition-colors sm:w-full sm:border-b-0 sm:border-l-2 ${
+                activeIndex === index
+                  ? "border-cyan-400 text-foreground"
+                  : "text-foreground/55 hover:text-foreground hover:border-foreground/20"
+              }`}
+            >
+              {entry.company}
+            </button>
+          ))}
+        </div>
+
+        <article
+          role="tabpanel"
+          className="border-l-2 border-cyan-400/90 pl-5 sm:pl-7"
+        >
+          <div className="flex items-start gap-3">
+            <CompanyLogo entry={active} />
+            <div className="min-w-0">
+              <h4 className="text-foreground whitespace-nowrap text-[18px] font-semibold leading-tight tracking-tight sm:text-[24px]">
+                {active.role} <span className="text-cyan-400">@ {active.company}</span>
+              </h4>
+              <p className="text-foreground/45 mt-2 font-mono text-[12px] uppercase tracking-[0.08em] sm:text-[13px]">
+                {active.period}
+              </p>
+            </div>
+          </div>
+
+          <ul className="mt-5 flex flex-col gap-4">
+            {active.highlights.map((highlight) => (
               <li
-                key={`${entry.company}-${entry.period}`}
-                className="bg-background border-foreground/5 flex items-center gap-4 rounded-3xl border p-2"
-                style={{ minHeight: ROW_HEIGHT }}
+                key={highlight}
+                className="text-foreground/65 flex items-start gap-3 text-[15px] leading-[1.55] tracking-tight sm:text-[16px]"
               >
-                <CompanyLogo entry={entry} />
-                <div className="flex min-w-0 flex-col">
-                  <span className="text-foreground text-[17px] font-semibold tracking-tight sm:text-[18px]">
-                    {entry.company}
-                  </span>
-                  <span className="text-foreground/65 mt-0.5 text-[14px] tracking-tight sm:text-[15px]">
-                    {entry.role}
-                    <span className="text-foreground/30 mx-2">•</span>
-                    <span className="text-foreground/55">{entry.period}</span>
-                  </span>
-                </div>
+                <span aria-hidden="true" className="mt-1 text-cyan-400">
+                  ▷
+                </span>
+                <span>{highlight}</span>
               </li>
             ))}
           </ul>
-        </motion.div>
-
-        <AnimatePresence>
-          {!open && (
-            <motion.div
-              key="fade"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0"
-              style={{
-                height: ROW_HEIGHT,
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                maskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 80%)",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent 0%, black 80%)",
-              }}
-            />
-          )}
-        </AnimatePresence>
-
-        {hiddenCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            className={`focus-ring text-foreground flex w-full cursor-pointer items-center justify-center gap-1.5 bg-transparent text-[15px] font-medium tracking-tight ${
-              open
-                ? "relative mt-4"
-                : "absolute inset-x-0 bottom-0 z-10 py-3 sm:py-4"
-            }`}
-          >
-            {open ? "Show less" : `Show ${hiddenCount} more`}
-            <motion.span
-              animate={{ rotate: open ? 180 : 0 }}
-              transition={{ duration: 0.25 }}
-              className="inline-flex"
-            >
-              <ChevronDown className="h-4 w-4" aria-hidden="true" />
-            </motion.span>
-          </button>
-        )}
+        </article>
       </div>
     </div>
   );
@@ -134,7 +104,6 @@ function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
       aria-hidden="true"
       style={{
         borderRadius: 14,
-        ...(entry.slug ? {} : { backgroundColor: entry.brand }),
       }}
     >
       {entry.logoSrc ? (
@@ -144,15 +113,6 @@ function CompanyLogo({ entry }: { entry: Entry }): ReactNode {
           width={32}
           height={32}
           className="h-8 w-8 object-contain"
-          draggable={false}
-        />
-      ) : entry.slug ? (
-        <Image
-          src={`https://cdn.simpleicons.org/${entry.slug}`}
-          alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6"
           draggable={false}
         />
       ) : (

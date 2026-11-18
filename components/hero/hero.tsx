@@ -6,10 +6,11 @@ import { PortraitMorph } from "./portrait-morph";
 
 const PORTRAIT_SRC = "/profile.webp";
 const PORTRAIT_HOVER_SRC = "/profile.webp";
+const PORTRAIT_FOCAL_POINT: [number, number] = [0.5, 0.15];
 
 export function Hero(): ReactNode {
   return (
-    <section className="relative w-full">
+    <section id="home" className="relative w-full scroll-mt-24">
       <div className="mx-auto w-full max-w-275 px-6 pt-44 pb-24 sm:px-10 sm:pt-56 sm:pb-32">
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-8">
           <FadeIn className="flex flex-col gap-4">
@@ -29,7 +30,7 @@ export function Hero(): ReactNode {
             </h1>
 
             <p className="max-w-[34ch] text-[22px] leading-[1.4] tracking-tight text-foreground/65">
-              Building useful systems, exploring AI automation, and growing
+              Building useful systems, exploring AI, and growing
               into a world-class developer.
             </p>
 
@@ -37,12 +38,13 @@ export function Hero(): ReactNode {
           </FadeIn>
 
           <ScaleUnblur className="flex justify-stretch md:justify-end">
-            <div className="relative aspect-square w-full md:max-w-105 overflow-hidden rounded-4xl border border-foreground/8 bg-background p-1.5 shadow-sm">
-              <div className="relative h-full w-full overflow-hidden rounded-[1.6rem]">
+            <div className="relative aspect-square w-full md:max-w-105 overflow-hidden rounded-4xl">
+              <div className="relative h-full w-full overflow-hidden">
                 <PortraitMorph
                   srcA={PORTRAIT_SRC}
                   srcB={PORTRAIT_HOVER_SRC}
                   alt="Joseph Gyimah portrait"
+                  focalPoint={PORTRAIT_FOCAL_POINT}
                 />
               </div>
             </div>

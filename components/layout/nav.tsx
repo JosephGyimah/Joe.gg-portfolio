@@ -20,10 +20,24 @@ type NavItem = {
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "About", href: "/about" },
+  { label: "Home", href: "/#home" },
+  { label: "Projects", href: "/#projects" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ];
+
+function subscribeToHash(callback: () => void): () => void {
+  window.addEventListener("hashchange", callback);
+  return () => window.removeEventListener("hashchange", callback);
+}
+
+function getHashSnapshot(): string {
+  return window.location.hash;
+}
+
+function getHashServerSnapshot(): string {
+  return "";
+}
 
 function useIsMounted(): boolean {
   return useSyncExternalStore(
@@ -89,7 +103,7 @@ function NavThemeToggle(): ReactNode {
           : "Toggle theme"
       }
       aria-pressed={mounted ? isDark : undefined}
-      className="focus-ring relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background ring-1 ring-foreground/8 transition-colors"
+      className="focus-ring fixed right-4 top-4 z-[60] inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-foreground/8 bg-background shadow-sm transition-colors sm:right-6 sm:top-6"
     >
       <span aria-hidden="true" className="relative h-4 w-4">
         <Sun
@@ -113,6 +127,11 @@ function NavThemeToggle(): ReactNode {
 
 export function Nav(): ReactNode {
   const pathname = usePathname();
+  const hash = useSyncExternalStore(
+    subscribeToHash,
+    getHashSnapshot,
+    getHashServerSnapshot
+  );
   const listRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [pillRect, setPillRect] = useState<{
@@ -121,11 +140,18 @@ export function Nav(): ReactNode {
   } | null>(null);
   const [hasMeasured, setHasMeasured] = useState(false);
 
-  const activeIndex = NAV_ITEMS.findIndex((item) =>
-    item.href === "/"
-      ? pathname === "/"
-      : pathname === item.href || pathname.startsWith(`${item.href}/`)
-  );
+  const activeIndex =
+    pathname === "/"
+      ? hash === "#projects"
+        ? 1
+        : hash === "#about"
+          ? 2
+          : hash === "#contact"
+            ? 3
+            : 0
+      : pathname === "/about"
+          ? 2
+          : 0;
 
   useLayoutEffect(() => {
     const list = listRef.current;
@@ -151,11 +177,12 @@ export function Nav(): ReactNode {
   }, [pillRect]);
 
   return (
-    <nav
-      aria-label="Primary"
-      className="fixed left-1/2 top-6 z-50 -translate-x-1/2"
-    >
-      <div className="flex items-center gap-1 rounded-full bg-background p-1.5 shadow-sm border border-foreground/8">
+    <>
+      <nav
+        aria-label="Primary"
+        className="fixed left-1/2 top-6 z-50 -translate-x-1/2"
+      >
+        <div className="flex items-center gap-1 rounded-full border border-foreground/8 bg-background p-1.5 shadow-sm">
         <ul ref={listRef} className="relative flex items-center gap-1">
           {pillRect && (
             <motion.span
@@ -200,8 +227,9 @@ export function Nav(): ReactNode {
             );
           })}
         </ul>
-        <NavThemeToggle />
-      </div>
-    </nav>
+        </div>
+      </nav>
+      <NavThemeToggle />
+    </>
   );
 }

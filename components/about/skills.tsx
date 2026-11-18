@@ -19,8 +19,8 @@ const SKILLS = [
 export function Skills(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-[15px] font-semibold tracking-tight text-foreground">
-        Skills
+      <h3 className="text-foreground font-mono text-[26px] font-medium tracking-tight sm:text-[32px]">
+        / skills
       </h3>
       <div className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
         <div className="flex flex-wrap gap-3">

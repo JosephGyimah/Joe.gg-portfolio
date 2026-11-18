@@ -139,7 +139,7 @@ export function ShaderFlow(props: ShaderFlowProps): ReactNode {
     if (!el) return;
 
     const r = new Renderer({
-      dpr: Math.min(window.devicePixelRatio || 1, 1),
+      dpr: Math.min(window.devicePixelRatio || 1, 0.75),
       alpha: false,
       antialias: false,
       powerPreference: "high-performance",
@@ -199,6 +199,8 @@ export function ShaderFlow(props: ShaderFlowProps): ReactNode {
     let raf = 0;
     let visible = true;
     let onScreen = true;
+    let lastRender = 0;
+    const frameInterval = 1000 / 30;
     const t0 = performance.now();
 
     const onVisibility = (): void => {
@@ -241,8 +243,10 @@ export function ShaderFlow(props: ShaderFlowProps): ReactNode {
     };
 
     const tick = (): void => {
-      if (visible && onScreen) {
-        p.uniforms.uT.value = (performance.now() - t0) / 1000;
+      const now = performance.now();
+      if (visible && onScreen && now - lastRender >= frameInterval) {
+        lastRender = now;
+        p.uniforms.uT.value = (now - t0) / 1000;
         sync();
         r.render({ scene });
       }

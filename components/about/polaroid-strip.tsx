@@ -60,8 +60,8 @@ function PolaroidCard({
       ref={ref}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
-      initial={{ opacity: 0, y: -120, filter: "blur(18px)", rotate: photo.rotate }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)", rotate: photo.rotate }}
+      initial={{ opacity: 0, y: -80, rotate: photo.rotate }}
+      animate={{ opacity: 1, y: 0, rotate: photo.rotate }}
       transition={{
         duration: 0.9,
         delay: 0.05 + index * 0.08,
